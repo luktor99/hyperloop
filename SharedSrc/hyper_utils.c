@@ -63,7 +63,7 @@ void HYPER_TempSensor_Init(void) {
 
 /**
  * @brief This function performs a single read of the temperature using the internal sensor.
- * @return Temperature expressed in 0.1�C (eg. 1234 = 123.4�C)
+ * @return Temperature expressed in 0.1°C (eg. 1234 = 123.4°C)
  */
 int16_t HYPER_TempSensor_Read(void) {
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_16, 1, ADC_SampleTime_55Cycles5);

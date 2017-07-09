@@ -15,7 +15,7 @@
 #define HYPER_LED_BLINK_OK		1000 	/**< Status LED on-off time (in ms) when no error is detected */
 #define HYPER_LED_BLINK_ERROR	100		/**< Status LED on-off time (in ms) when error is detected */
 
-#define HYPER_INTERNAL_TEMP_MAX 	1100 	/**< Max temperature threshold in 0.1�C (eg. 1234 = 123.4�C). Exceeding this value causes a fatal error */
+#define HYPER_INTERNAL_TEMP_MAX 	1100 	/**< Max temperature threshold in 0.1°C (eg. 1234 = 123.4°C). Exceeding this value causes a fatal error */
 #define HYPER_INTERNAL_TEMP_PERIOD	500		/**< The time between internal temperature checks (in ms) */
 
 #endif /* HYPER_SETTINGS_H_ */
