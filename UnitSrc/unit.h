@@ -1,6 +1,6 @@
 /**
  * @file unit.h
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 4-July-2017
  * @brief This file contains unit's initialization and main loop functions' headers
  */

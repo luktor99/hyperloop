@@ -1,6 +1,6 @@
 /**
  * @file mlx90614.c
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 6-July-2017
  * @brief This file contains the implementation of MLX90614 sensor driver
  */
@@ -102,7 +102,7 @@ static uint16_t MLX90614_ReadReg(uint8_t reg) {
 
 /**
  * @brief This function reads the temperature from the sensor.
- * @return Temperature expressed in ∞C (eg. 123 = 123∞C) (Possible range: 0..255)
+ * @return Temperature expressed in ÔøΩC (eg. 123 = 123ÔøΩC) (Possible range: 0..255)
  */
 uint8_t MLX90614_readTemp(void) {
 	float temp = MLX90614_ReadReg(TOBJ1);

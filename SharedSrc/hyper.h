@@ -1,6 +1,6 @@
 /**
  * @file hyper.h
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 26-June-2017
  * @brief This file contains initialization headers and groups all the includes shared between the units.
  */

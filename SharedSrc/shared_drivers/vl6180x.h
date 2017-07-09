@@ -1,6 +1,6 @@
 /**
  * @file vl6180x.h
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 6-July-2017
  * @brief This file contains the headers of VL6180X sensor driver
  */

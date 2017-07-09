@@ -1,6 +1,6 @@
 /**
  * @file lm35.c
- * @author £ukasz Kilaszewski (luktor99)
+ * @author Åukasz Kilaszewski (luktor99)
  * @date 6-July-2017
  * @brief This file contains the implementation of LM35 sensor driver
  */
@@ -39,21 +39,21 @@ uint16_t LM35_ReadADC(void) {
 
 /**
  * @brief This function reads the temperature from LM35 sensor with high resolution
- * @return Temperature expressed in 0.1°C (eg. 1234 = 123.4°C)
+ * @return Temperature expressed in 0.1ï¿½C (eg. 1234 = 123.4ï¿½C)
  */
 uint16_t LM35_ReadTemp16(void) {
 	uint16_t adc_sample = LM35_ReadADC();
-	// LM35 outputs 10mV/°C
+	// LM35 outputs 10mV/ï¿½C
 	return adc_sample * 3300 / 4095;
 }
 
 /**
  * @brief This function reads the temperature from LM35 sensor with low resolution
- * @return Temperature expressed in °C (eg. 123 = 123°C) (Possible range: 0..255)
+ * @return Temperature expressed in ï¿½C (eg. 123 = 123ï¿½C) (Possible range: 0..255)
  */
 uint8_t LM35_ReadTemp8(void) {
 	uint16_t adc_sample = LM35_ReadADC();
-	// LM35 outputs 10mV/°C
+	// LM35 outputs 10mV/ï¿½C
 	uint16_t temp = adc_sample * 330 / 4095;
 	if(temp > 255)
 		return 255; // overflow

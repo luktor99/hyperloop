@@ -1,6 +1,6 @@
 /**
  * @file hyper_utils.h
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 4-July-2017
  * @brief This file contains headers of various utility functions
  */

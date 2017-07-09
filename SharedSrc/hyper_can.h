@@ -1,6 +1,6 @@
 /**
  * @file hyper_can.h
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 26-June-2017
  * @brief This file contains the headers of the CAN bus related functions
  */

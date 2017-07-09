@@ -1,6 +1,6 @@
 /**
  * @file hyper_can_frames.h
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 26-June-2017
  * @brief This file contains the CAN data frames definitions
  */

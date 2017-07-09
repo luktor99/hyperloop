@@ -1,6 +1,6 @@
 /**
  * @file hyper_can.c
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 26-June-2017
  * @brief This file contains a set of functions that take care of the data transfers
  * between the units and the central node (Raspberry Pi) through the CAN bus.

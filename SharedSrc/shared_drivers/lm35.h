@@ -1,6 +1,6 @@
 /**
  * @file lm35.h
- * @author £ukasz Kilaszewski (luktor99)
+ * @author ≈Åukasz Kilaszewski (luktor99)
  * @date 6-July-2017
  * @brief This file contains the headers of LM35 sensor driver
  */
