@@ -11,6 +11,7 @@
 #include "shared_drivers/lm35.h"
 #include "shared_drivers/vl6180x.h"
 #include "shared_drivers/mlx90614.h"
+#include "unit_drivers/max6675.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -25,6 +26,7 @@ void UNIT_Init(void) {
 //	VL6180X_InitSensor(VL6180X_ID4);
 
 	MLX90614_Init();
+	MAX6675_Init();
 }
 
 /**
@@ -52,6 +54,16 @@ inline void UNIT_Loop(void) {
 	// Read and update the pyrometer sensor
 	uint8_t pyro_temp = MLX90614_readTemp();
 	HYPER_CAN_Update(updatePyro, &pyro_temp);
+
+	// Read and update the thermocouple sensor (every 250ms)
+	static uint32_t tcouple_timestamp = 0;
+	if(HYPER_Delay_Check(tcouple_timestamp, 250)) {
+		uint8_t tcouple_temp = MAX6675_ReadTemp();
+		HYPER_CAN_Update(updateTCouple, &tcouple_temp);
+
+		// Update the time stamp
+		tcouple_timestamp = HYPER_Delay_GetTime();
+	}
 
 	// Read and update the LM35 sensor
 	uint16_t lm35_temp = LM35_ReadTemp8();

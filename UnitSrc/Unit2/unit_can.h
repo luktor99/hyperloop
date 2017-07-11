@@ -62,4 +62,13 @@ void updatePyro(unit_DataBuffer_t *buffer, void *value) {
 	buffer->pyroTemperature = *(uint8_t *)value;
 }
 
+/**
+ * @brief This function updates the CAN data buffer
+ * @param buffer Pointer to the CAN buffer structure
+ * @param value Pointer to the new data
+ */
+void updateTCouple(unit_DataBuffer_t *buffer, void *value) {
+	buffer->tCoupleTemperature = *(uint8_t *)value;
+}
+
 #endif /* UNIT_CAN_H_ */
