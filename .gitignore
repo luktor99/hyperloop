@@ -4,7 +4,8 @@ doc/
 *.elf
 TrueSTUDIO/Unit1\ Debug/
 TrueSTUDIO/Unit2\ Debug/
-TrueSTUDIO/Unit34\ Debug/
+TrueSTUDIO/Unit3\ Debug/
+TrueSTUDIO/Unit4\ Debug/
 TrueSTUDIO/Unit5\ Debug/
 TrueSTUDIO/Unit6\ Debug/
 TrueSTUDIO/.settings
