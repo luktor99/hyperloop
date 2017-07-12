@@ -12,6 +12,7 @@
 #include "shared_drivers/vl6180x.h"
 #include "shared_drivers/mlx90614.h"
 #include "unit_drivers/max6675.h"
+#include "shared_drivers/voltmeter.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -27,6 +28,7 @@ void UNIT_Init(void) {
 
 	MLX90614_Init();
 	MAX6675_Init();
+	Voltmeter_Init();
 }
 
 /**
@@ -64,6 +66,10 @@ inline void UNIT_Loop(void) {
 		// Update the time stamp
 		tcouple_timestamp = HYPER_Delay_GetTime();
 	}
+
+	// Read and update the 12V rail voltage
+	uint8_t voltage12v = Voltmeter_Read();
+	HYPER_CAN_Update(updateVoltage12V, &voltage12v);
 
 	// Read and update the LM35 sensor
 	uint16_t lm35_temp = LM35_ReadTemp8();
