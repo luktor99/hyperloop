@@ -9,6 +9,8 @@
 #include "voltmeter.h"
 #include "hyper_unit_defs.h"
 
+#if defined(UNIT_2) || defined(UNIT_5) // Only compile this file for these units
+
 #define R1 10000	/**< Value of the R1 resistor in the voltage divider */
 #define R2 3300		/**< Value of the R2 resistor in the voltage divider */
 
@@ -37,3 +39,5 @@ uint8_t Voltmeter_Read(void) {
 	uint16_t adc_result = ADC_GetConversionValue(ADC1);
 	return adc_result * 33 * (R1+R2) / R2 / 4095;
 }
+
+#endif
