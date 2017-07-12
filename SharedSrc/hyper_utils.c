@@ -10,6 +10,14 @@
 #include "hyper_unit_defs.h"
 #include "hyper_settings.h"
 
+#if defined(UNIT_3) || defined(UNIT_4)
+#define ADC			ADC2					/**< The ADC peripheral used for common actions */
+#define ADC_RCC		RCC_APB2Periph_ADC2		/**< The ADC RCC clock */
+#else
+#define ADC 		ADC1					/**< The ADC peripheral used for common actions */
+#define ADC_RCC		RCC_APB2Periph_ADC1		/**< The ADC RCC clock */
+#endif
+
 /**
  * @brief Milliseconds counter, incremented in SysTick_Handler() by calling HYPER_Tick();
  */
@@ -47,7 +55,7 @@ void HYPER_LED_Init(void) {
  * @brief This function initializes the ADC circuitry required to read the internal temperature sensor.
  */
 void HYPER_TempSensor_Init(void) {
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	RCC_APB2PeriphClockCmd(ADC_RCC, ENABLE);
 
 	ADC_InitTypeDef adc_init;
 	adc_init.ADC_Mode = ADC_Mode_Independent;
@@ -56,9 +64,9 @@ void HYPER_TempSensor_Init(void) {
 	adc_init.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
 	adc_init.ADC_DataAlign = ADC_DataAlign_Right;
 	adc_init.ADC_NbrOfChannel = 1;
-	ADC_Init(ADC1, &adc_init);
+	ADC_Init(ADC, &adc_init);
 	ADC_TempSensorVrefintCmd(ENABLE);
-	ADC_Cmd(ADC1, ENABLE);
+	ADC_Cmd(ADC, ENABLE);
 }
 
 /**
@@ -66,10 +74,10 @@ void HYPER_TempSensor_Init(void) {
  * @return Temperature expressed in 0.1°C (eg. 1234 = 123.4°C)
  */
 int16_t HYPER_TempSensor_Read(void) {
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_16, 1, ADC_SampleTime_55Cycles5);
-	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) != SET);
-	uint16_t adc_result = ADC_GetConversionValue(ADC1);
+	ADC_RegularChannelConfig(ADC, ADC_Channel_16, 1, ADC_SampleTime_55Cycles5);
+	ADC_SoftwareStartConvCmd(ADC, ENABLE);
+	while(ADC_GetFlagStatus(ADC, ADC_FLAG_EOC) != SET);
+	uint16_t adc_result = ADC_GetConversionValue(ADC);
 	return ((UNIT_TEMP_V_25_100 - adc_result * 100) / UNIT_TEMP_AVG_SLOPE_10) + UNIT_TEMP_SHIFT;
 }
 
