@@ -179,4 +179,19 @@
 #define UNIT_VL6180X_4_INT_GPIO		GPIOA			/**< The GPIO peripheral connected to 4th sensor's INT pin */
 #endif
 
+/**
+ * @brief 12V rail voltage measurement connection
+ */
+#if defined UNIT_2
+#define	UNIT_12VRAIL_PIN			GPIO_Pin_2				/**< The GPIO pin the 12V rail voltage is connected to */
+#define UNIT_12VRAIL_GPIO			GPIOA					/**< The GPIO peripheral the 12V rail voltage is connected to */
+#define UNIT_12VRAIL_RCC			RCC_APB2Periph_GPIOA 	/**< The RCC clock of the GPIO the 12V rail voltage is connected to */
+#define UNIT_12VRAIL_ADC_CH			ADC_Channel_2			/**< The ADC Channel the 12V rail voltage is connected to */
+#elif defined UNIT_5
+#define	UNIT_12VRAIL_PIN			GPIO_Pin_7				/**< The GPIO pin the 12V rail voltage is connected to */
+#define UNIT_12VRAIL_GPIO			GPIOA					/**< The GPIO peripheral the 12V rail voltage is connected to */
+#define UNIT_12VRAIL_RCC			RCC_APB2Periph_GPIOA 	/**< The RCC clock of the GPIO the 12V rail voltage is connected to */
+#define UNIT_12VRAIL_ADC_CH			ADC_Channel_7			/**< The ADC Channel the 12V rail voltage is connected to */
+#endif
+
 #endif /* HYPER_UNIT_DEFS_H_ */
