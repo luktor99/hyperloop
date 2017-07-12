@@ -57,8 +57,10 @@ typedef struct {
 	uint8_t vl6180xDistance2	: 8;	/**< Distance reading from distance sensor 2 (VL6180X) */
 	uint8_t vl6180xDistance3	: 8;	/**< Distance reading from distance sensor 3 (VL6180X) */
 	uint8_t vl6180xDistance4	: 8;	/**< Distance reading from distance sensor 4 (VL6180X) */
-	uint8_t pyroTemperature		: 7;	/**< Temperature reading from MLX90614 pyrometer */
-
+	uint8_t pyroTemperature		: 8;	/**< Temperature reading from MLX90614 pyrometer */
+	uint8_t voltage12V			: 8;	/**< 12V rail voltage reading */
+	uint8_t current				: 8;	/**< Current sensor reading */
+	uint8_t cabinPressure		: 8;	/**< Pressure reading from the cabin pressure sensor */
 } __attribute__((__packed__)) unit5_DataBuffer_t;
 
 /**
