@@ -5,11 +5,11 @@
  * @brief This file contains the implementation of the 12V rail voltage sensing driver
  */
 
+#if defined(UNIT_2) || defined(UNIT_5) // Only compile this file for these units
+
 #include "stm32f10x.h"
 #include "voltmeter.h"
 #include "hyper_unit_defs.h"
-
-#if defined(UNIT_2) || defined(UNIT_5) // Only compile this file for these units
 
 #define R1 10000	/**< Value of the R1 resistor in the voltage divider */
 #define R2 3300		/**< Value of the R2 resistor in the voltage divider */
