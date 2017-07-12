@@ -50,7 +50,7 @@ void updateVL6180X_4(unit_DataBuffer_t *buffer, void *value) {
  * @param value Pointer to the new data
  */
 void updateLM35(unit_DataBuffer_t *buffer, void *value) {
-	buffer->lm35Temperature = *(uint16_t *)value;
+	buffer->lm35Temperature = *(uint8_t *)value;
 }
 
 /**

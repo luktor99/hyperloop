@@ -72,6 +72,6 @@ inline void UNIT_Loop(void) {
 	HYPER_CAN_Update(updateVoltage12V, &voltage12v);
 
 	// Read and update the LM35 sensor
-	uint16_t lm35_temp = LM35_ReadTemp8();
+	uint8_t lm35_temp = LM35_ReadTemp8();
 	HYPER_CAN_Update(updateLM35, &lm35_temp);
 }
