@@ -194,4 +194,21 @@
 #define UNIT_12VRAIL_ADC_CH			ADC_Channel_7			/**< The ADC Channel the 12V rail voltage is connected to */
 #endif
 
+/**
+ * @brief Brakes interface
+ */
+#if defined UNIT_2
+#define UNIT_BRAKES_GPIO			GPIOB					/**< The GPIO peripheral A, B, C inputs are connected to */
+#define UNIT_BRAKES_RCC				RCC_APB2Periph_GPIOB	/**< The RCC clock of the GPIO */
+#define UNIT_BRAKES_PIN_A			GPIO_Pin_3				/**< The GPIO pin connected to the A input */
+#define UNIT_BRAKES_PIN_B			GPIO_Pin_4				/**< The GPIO pin connected to the B input */
+#define UNIT_BRAKES_PIN_C			GPIO_Pin_5				/**< The GPIO pin connected to the C input */
+#elif defined UNIT_6
+#define UNIT_BRAKES_GPIO			GPIOA					/**< The GPIO peripheral A, B, C inputs are connected to */
+#define UNIT_BRAKES_RCC				RCC_APB2Periph_GPIOA	/**< The RCC clock of the GPIO */
+#define UNIT_BRAKES_PIN_A			GPIO_Pin_3				/**< The GPIO pin connected to the A input */
+#define UNIT_BRAKES_PIN_B			GPIO_Pin_2				/**< The GPIO pin connected to the B input */
+#define UNIT_BRAKES_PIN_C			GPIO_Pin_1				/**< The GPIO pin connected to the C input */
+#endif
+
 #endif /* HYPER_UNIT_DEFS_H_ */
