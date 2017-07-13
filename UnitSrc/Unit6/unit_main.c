@@ -8,12 +8,15 @@
 #include "unit.h"
 #include "hyper.h"
 #include "unit_can.h"
+#include "shared_drivers/brakes.h"
+#include "unit_drivers/power.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
  */
 void UNIT_Init(void) {
-	// TODO: Fill me.
+	Brakes_Init();
+	Power_Init();
 }
 
 /**
@@ -21,4 +24,17 @@ void UNIT_Init(void) {
  */
 inline void UNIT_Loop(void) {
 	// TODO: Fill me.
+}
+
+/**
+ * @brief This function processes a received CAN message
+ * @param msg_type The message type @see MsgType_t
+ */
+void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
+	if(msg_type == MSG_BRAKESHOLD)
+		Brakes_Hold();
+	else if(msg_type == MSG_BRAKESRELEASE)
+		Brakes_Release();
+	else if(msg_type == MSG_POWERDOWN)
+		Power_Down();
 }
