@@ -114,13 +114,13 @@ static void HYPER_CAN_ProcessFrame(CanRxMsg* msg) {
 	else if(msg->StdId == UNIT_CAN_ID_DATA_IN) {
 		// Incoming data frame
 		MsgType_t msg_type = msg->Data[0];
-		// Process the basic messages or pass it to the unit's process function
+		// Process the basic messages
 		if(msg_type == MSG_START)
 			HYPER_Start();
 		else if(msg_type == MSG_RESET)
 			HYPER_Reset();
-		else
-			UNIT_CAN_ProcessFrame(msg_type);
+		// Pass the message to the unit's processing function
+		UNIT_CAN_ProcessFrame(msg_type);
 	}
 
 	// Update the status LED
