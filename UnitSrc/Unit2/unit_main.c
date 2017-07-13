@@ -78,8 +78,8 @@ inline void UNIT_Loop(void) {
 }
 
 /**
- * @brief This function processes a received CAN message that contains the incoming message
- * @param msg Pointer to the received message held in a CanRxMsg structure
+ * @brief This function processes a received CAN message
+ * @param msg_type The message type @see MsgType_t
  */
 void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
 	if(msg_type == MSG_BRAKESHOLD)
