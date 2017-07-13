@@ -77,7 +77,7 @@ typedef enum {
 	MSG_START = 0,			/**< Unit start message */
 	MSG_RESET,				/**< Unit reset message */
 	MSG_POWERDOWN,			/**< Emergency power cut message (unit 6 only) */
-	MSG_WATCHDOGTICK,		/**< Watchdog tick (unit 6 only) */
+	MSG_WATCHDOGRESET,		/**< Watchdog reset message (unit 6 only) */
 	MSG_BRAKESHOLD,			/**< Brakes hold message (unit 2 and 6 only) */
 	MSG_BRAKESRELEASE		/**< Brakes release message (unit 2 and 6 only) */
 } MsgType_t;
