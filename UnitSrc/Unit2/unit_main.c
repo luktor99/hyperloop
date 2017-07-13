@@ -13,6 +13,7 @@
 #include "shared_drivers/mlx90614.h"
 #include "unit_drivers/max6675.h"
 #include "shared_drivers/voltmeter.h"
+#include "shared_drivers/brakes.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -74,4 +75,15 @@ inline void UNIT_Loop(void) {
 	// Read and update the LM35 sensor
 	uint8_t lm35_temp = LM35_ReadTemp8();
 	HYPER_CAN_Update(updateLM35, &lm35_temp);
+}
+
+/**
+ * @brief This function processes a received CAN message that contains the incoming message
+ * @param msg Pointer to the received message held in a CanRxMsg structure
+ */
+void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
+	if(msg_type == MSG_BRAKESHOLD)
+		Brakes_Hold();
+	else if(msg_type == MSG_BRAKESRELEASE)
+		Brakes_Release();
 }
