@@ -37,6 +37,8 @@ int main(void) {
 	HYPER_Init();
 	UNIT_Init();
 
+	//HYPER_WaitForStart();
+
 	for(;;) {
 		UNIT_Loop();
 

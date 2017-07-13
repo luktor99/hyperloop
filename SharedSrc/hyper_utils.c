@@ -26,7 +26,12 @@ static volatile uint32_t sysTickCounter = 0;
 /**
  * @brief Status LED state (OK - true / ERROR - false). Updated through HYPER_LED_UpdateOK()
  */
-static uint32_t statusLEDStateOK = true;
+static bool statusLEDStateOK = true;
+
+/**
+ * @brief Unit execution state (STARTED - true / NOT STARTED - false). Updated through HYPER_Start()
+ */
+static bool unitStarted = false;
 
 /**
  * @brief This function initializes the SysTick counter, used as milliseconds counter for delays
@@ -172,4 +177,60 @@ void HYPER_LED_Tick(void) {
  */
 void HYPER_LED_UpdateOK(void) {
 	statusLEDStateOK = true;
+}
+
+/**
+ * @brief This function starts up the unit
+ */
+void HYPER_Start(void) {
+	unitStarted = true;
+}
+
+/**
+ * @brief This is a help function for LED animations in HYPER_WaitForStart()
+ * @param led_state The status LED state (true - ON, false - OFF)
+ * @param delay The delay duration in milliseconds
+ * @return True if unit has been started through HYPER_Start(), false otherwise
+ */
+static bool HYPER_WaitLED(bool led_state, uint32_t delay) {
+	// Set the LED ON/OFF
+	if(led_state)
+		UNIT_LED_GPIO->BRR = UNIT_LED_PIN;
+	else
+		UNIT_LED_GPIO->BSRR = UNIT_LED_PIN;
+
+	// Delay
+	uint32_t timestamp = HYPER_Delay_GetTime();
+	while(!HYPER_Delay_Check(timestamp, delay)) {
+		if(unitStarted)
+			return true;
+	}
+
+	return false;
+}
+
+/**
+ * @brief This function blocks the program execution until HYPER_Start() is called
+ */
+void HYPER_WaitForStart(void) {
+	for(;;) {
+		if(HYPER_WaitLED(true, 40))
+			return;
+		if(HYPER_WaitLED(false, 200))
+			return;
+		if(HYPER_WaitLED(true, 40))
+			return;
+		if(HYPER_WaitLED(false, 200))
+			return;
+		if(HYPER_WaitLED(true, 80))
+			return;
+		if(HYPER_WaitLED(false, 1000))
+			return;
+	}
+}
+/**
+ * @brief This function resets the MCU
+ */
+void HYPER_Reset(void) {
+	NVIC_SystemReset();
 }

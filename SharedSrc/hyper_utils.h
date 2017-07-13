@@ -25,4 +25,8 @@ void HYPER_LED_UpdateOK(void);
 int16_t HYPER_TempSensor_Read(void);
 void HYPER_TempSensor_Check(void);
 
+void HYPER_Start(void);
+void HYPER_WaitForStart(void);
+void HYPER_Reset(void);
+
 #endif /* HYPER_UTILS_H_ */
