@@ -70,4 +70,14 @@ typedef struct {
 	uint8_t brakesState			: 1;	/**< Brakes state */
 } __attribute__((__packed__)) unit6_DataBuffer_t;
 
+/**
+ * @brief This enum represents the possible incoming messages
+ */
+typedef enum {
+	MSG_START = 0,
+	MSG_RESET,
+	MSG_WATCHDOGTICK,
+	MSG_BRAKESHOLD,
+	MSG_BRAKESRELEASE
+} MsgType_t;
 #endif /* HYPER_CAN_FRAMES_H_ */

@@ -18,6 +18,8 @@
  */
 static unit_DataBuffer_t unitDataBuffer = {0};
 
+void UNIT_CAN_ProcessFrame(MsgType_t msg_type) __attribute__((weak));
+
 /**
  * @brief This function initializes the CAN1 peripheral and the required GPIOs.
  * The CAN message ID filter and CAN1_RX_IRQ get enabled as well.
@@ -58,7 +60,7 @@ void HYPER_CAN_Init(void) {
 	can_filter_init.CAN_FilterMode = CAN_FilterMode_IdList;
 	can_filter_init.CAN_FilterScale = CAN_FilterScale_16bit;
 	can_filter_init.CAN_FilterIdHigh = (UNIT_CAN_ID_DATA_OUT << 5) | (1 << 4);
-	can_filter_init.CAN_FilterIdLow = 0x0;
+	can_filter_init.CAN_FilterIdLow = (UNIT_CAN_ID_DATA_IN << 5);
 	can_filter_init.CAN_FilterFIFOAssignment = CAN_FIFO0;
 	can_filter_init.CAN_FilterActivation = ENABLE;
 	CAN_FilterInit(&can_filter_init);
@@ -100,12 +102,27 @@ static void HYPER_CAN_SendData(const uint32_t id, const uint8_t data_length, con
 }
 
 /**
- * @brief This function processes a received CAN message and sets the corresponding flags
+ * @brief This function processes a received CAN message and processes it
  * @param msg Pointer to the received message held in a CanRxMsg structure
  */
 static void HYPER_CAN_ProcessFrame(CanRxMsg* msg) {
-	// FIXME: random stuff here for now
-	HYPER_CAN_SendData(UNIT_CAN_ID_DATA_OUT, sizeof(unitDataBuffer), (uint8_t *)&unitDataBuffer);
+	// Check the frame ID
+	if(msg->StdId == UNIT_CAN_ID_DATA_OUT) {
+		// RTR frame - send data out
+		HYPER_CAN_SendData(UNIT_CAN_ID_DATA_OUT, sizeof(unitDataBuffer), (uint8_t *)&unitDataBuffer);
+	}
+	else if(msg->StdId == UNIT_CAN_ID_DATA_IN) {
+		// Incoming data frame
+		MsgType_t msg_type = msg->Data[0];
+		// Process the basic messages or pass it to the unit's process function
+		if(msg_type == MSG_START)
+			HYPER_Start();
+		else if(msg_type == MSG_RESET)
+			HYPER_Reset();
+		else
+			UNIT_CAN_ProcessFrame(msg_type);
+	}
+
 	// Update the status LED
 	HYPER_LED_UpdateOK();
 }
@@ -113,8 +130,7 @@ static void HYPER_CAN_ProcessFrame(CanRxMsg* msg) {
 /**
  * @brief This function handles CAN1_RX0_IRQ.
  */
-void USB_LP_CAN1_RX0_IRQHandler(void)
-{
+void USB_LP_CAN1_RX0_IRQHandler(void) {
 	if(CAN_GetITStatus(CAN1, CAN_IT_FMP0)) {
 		// Receive the message into a buffer
 		CanRxMsg msg;
