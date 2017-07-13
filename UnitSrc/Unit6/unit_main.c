@@ -10,6 +10,7 @@
 #include "unit_can.h"
 #include "shared_drivers/brakes.h"
 #include "unit_drivers/power.h"
+#include "watchdog.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -17,13 +18,14 @@
 void UNIT_Init(void) {
 	Brakes_Init();
 	Power_Init();
+	Watchdog_Init();
 }
 
 /**
  * @brief This function is run in an infinite loop. This is where outgoing data gets updated.
  */
 inline void UNIT_Loop(void) {
-	// TODO: Fill me.
+	Watchdog_Tick();
 }
 
 /**
@@ -37,4 +39,6 @@ void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
 		Brakes_Release();
 	else if(msg_type == MSG_POWERDOWN)
 		Power_Down();
+	else if(msg_type == MSG_START)
+		Watchdog_Reset();
 }
