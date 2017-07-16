@@ -1,6 +1,6 @@
 /**
  * @file hyper_unit_defs.h
- * @author Łukasz Kilaszewski (luktor99)
+ * @author Ĺ�ukasz Kilaszewski (luktor99) & Serafin Bachman
  * @date 26-June-2017
  * @brief This file contains the constants specific to each unit
  *
@@ -57,7 +57,7 @@
 #define UNIT_LED_RCC			RCC_APB2Periph_GPIOB	/**< The RCC clock of the GPIO the LED is connected to */
 #elif defined UNIT_3
 #define UNIT_LED_PIN			GPIO_Pin_8				/**< The GPIO pin the LED is connected to */
-#define UNIT_LED_GPIO			GPIOA					/**< The GPIO peripheral the LED is connected to */
+#define UNIT_LED_GPIO			GPIOA					/**< The GPIO peripheral the LED is connected to */ ADC_Channel_0
 #define UNIT_LED_RCC			RCC_APB2Periph_GPIOA	/**< The RCC clock of the GPIO the LED is connected to */
 #elif defined UNIT_4
 #define UNIT_LED_PIN			GPIO_Pin_8				/**< The GPIO pin the LED is connected to */
@@ -192,11 +192,18 @@
 #define UNIT_12VRAIL_GPIO			GPIOA					/**< The GPIO peripheral the 12V rail voltage is connected to */
 #define UNIT_12VRAIL_RCC			RCC_APB2Periph_GPIOA 	/**< The RCC clock of the GPIO the 12V rail voltage is connected to */
 #define UNIT_12VRAIL_ADC_CH			ADC_Channel_7			/**< The ADC Channel the 12V rail voltage is connected to */
+
+
+#define ADC1_Pin GPIO_Pin_3
+#define ADC2_Pin GPIO_Pin_4
+#define ADC3_Pin GPIO_Pin_7
+#define CUTOFF 10000								// Do ustalenia
+#define SAMPLE_RATE 25000 							// Do ustalenia
 #endif
 
 /**
  * @brief Brakes interface
- */
+ */ ADC_Channel_0
 #if defined UNIT_2
 #define UNIT_BRAKES_GPIO			GPIOB					/**< The GPIO peripheral A, B, C inputs are connected to */
 #define UNIT_BRAKES_RCC				RCC_APB2Periph_GPIOB	/**< The RCC clock of the GPIO */
@@ -209,6 +216,34 @@
 #define UNIT_BRAKES_PIN_A			GPIO_Pin_3				/**< The GPIO pin connected to the A input */
 #define UNIT_BRAKES_PIN_B			GPIO_Pin_2				/**< The GPIO pin connected to the B input */
 #define UNIT_BRAKES_PIN_C			GPIO_Pin_1				/**< The GPIO pin connected to the C input */
+#endif
+
+/**
+ * @brief encoders connections
+ */
+#if defined UNIT_3 || UNIT_4
+#define Enk_ch1 GPIO_Pin_6 									/**< The GPIO pin connected to the angular encoder ch1 input */
+#define Enk_ch2 GPIO_Pin_7 									/**< The GPIO pin connected to the angular encoder ch2 input */
+#define Mos1_Pin GPIO_Pin_1									/**< The GPIO pin connected to the diode voltage level mosfet input */
+#define Mos2_Pin GPIO_Pin_2									/**< The GPIO pin connected to the diode voltage level mosfet input */
+#define Mos3_Pin GPIO_Pin_3									/**< The GPIO pin connected to the diode voltage level mosfet input */
+#define ADC1_Pin GPIO_Pin_4									/**< The GPIO pin connected to the line encoder ch1 input */
+#define ADC2_Pin GPIO_Pin_5									/**< The GPIO pin connected to the line encoder ch2 input */
+#define ADC3_Pin GPIO_Pin_0									/**< The GPIO pin connected to the line encoder ch3 input */
+
+#define CUTOFF 10000										/**< Deffinition of cutoff frequency */
+#define SAMPLE_RATE 25000 									/**< Deffinition of sampling rate (TRZEBA USTALIC) */
+
+#endif
+
+/**
+ * @brief current and pressure ADC connections
+ */
+#if defined UNIT5
+#define UNIT_CURRENT_Pin GPIO_Pin_4                         /**< The GPIO pin connected to the current sensor input */
+
+#define UNIT_PRESSURE_PIN GPIO_Pin_5                        /**< The GPIO pin connected to the pod internal pressure input */
+
 #endif
 
 #endif /* HYPER_UNIT_DEFS_H_ */
