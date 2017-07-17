@@ -47,7 +47,7 @@ void updateVL6180X_4(unit_DataBuffer_t *buffer, void *value) {
  * @param value Pointer to the new data
  */
 void updatePitot(unit_DataBuffer_t *buffer, void *value) {
-	buffer->pitotPressure = *(int16_t *)value;
+	buffer->pitotPressure = *(uint16_t *)value;
 }
 
 /**

@@ -16,7 +16,7 @@ typedef struct {
 	uint8_t vl6180xDistance2	: 8;	/**< Distance reading from distance sensor 2 (VL6180X) */
 	uint8_t vl6180xDistance3	: 8;	/**< Distance reading from distance sensor 3 (VL6180X) */
 	uint8_t vl6180xDistance4	: 8;	/**< Distance reading from distance sensor 4 (VL6180X) */
-	int16_t pitotPressure		: 12;	/**< Pressure reading from the Pitot sensor */
+	uint16_t pitotPressure		: 16;	/**< Pressure reading from the Pitot sensor */
 	uint8_t lm35Temperature		: 8;	/**< Temperature reading from LM35 sensor */
 	uint8_t tmp102Tmperature	: 8;	/**< Temperature reading from TMP-102 sensor */
 } __attribute__((__packed__)) unit1_DataBuffer_t;
