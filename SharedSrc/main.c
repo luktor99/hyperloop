@@ -42,7 +42,7 @@ int main(void) {
 	for(;;) {
 		UNIT_Loop();
 
-		HYPER_TempSensor_Check();
+		//HYPER_TempSensor_Check();
 		HYPER_LED_Tick();
 	}
 }

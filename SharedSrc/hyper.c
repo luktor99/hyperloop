@@ -12,7 +12,7 @@
  */
 void HYPER_Init(void) {
 	HYPER_SysTick_Init();
-	HYPER_TempSensor_Init();
+	//HYPER_TempSensor_Init();
 	HYPER_LED_Init();
 	HYPER_CAN_Init();
 }
