@@ -1,6 +1,6 @@
 /**
  * @file Unit5/unit_can.h
- * @author Ĺ�ukasz Kilaszewski (luktor99) & Serafin Bachman
+ * @author Łukasz Kilaszewski (luktor99)
  * @date 5-July-2017
  * @brief This file contains implementation of functions that update the unit's CAN output buffer.
  */
