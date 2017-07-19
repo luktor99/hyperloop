@@ -1,6 +1,7 @@
 /**
  * @file Unit5/unit_main.c
  * @author Łukasz Kilaszewski (luktor99)
+ * @author Serafin Bachman
  * @date 4-July-2017
  * @brief This file contains implementation of the main functions (UNIT_Init() and UNIT_Loop()), which are specific to each of the units.
  */
