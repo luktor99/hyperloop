@@ -12,6 +12,8 @@
 #include "shared_drivers/vl6180x.h"
 #include "shared_drivers/mlx90614.h"
 #include "shared_drivers/voltmeter.h"
+#include "unit_drivers/current_sensor.h"
+#include "unit_drivers/pressure_sensor.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -25,6 +27,8 @@ void UNIT_Init(void) {
 
 	MLX90614_Init();
 	Voltmeter_Init();
+    CurrentSensor_Init();
+    PressureSensor_Init();
 }
 
 /**
@@ -56,4 +60,12 @@ inline void UNIT_Loop(void) {
 	// Read and update the 12V rail voltage
 	uint8_t voltage12v = Voltmeter_Read();
 	HYPER_CAN_Update(updateVoltage12V, &voltage12v);
+
+    // Read and update the current reading
+	uint8_t current = CurrentSensor_Read();
+	HYPER_CAN_Update(updateCurrent, &current);
+
+    // Read and update the internal pod pressure
+	uint8_t pressure = PressureSensor_Read();
+	HYPER_CAN_Update(updateCabinPressure, &pressure);
 }
