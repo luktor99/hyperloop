@@ -30,6 +30,8 @@ uint8_t CurrentSensor_Read(void) {
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) != SET);
 
-    uint16_t adc_result = ADC_GetConversionValue(ADC1);
-	return adc_result;
+    uint16_t current = (ADC_GetConversionValue(ADC1) - 3032)*33000/28/4095;
+    if(current > 255)
+    	return 255;
+	return (uint8_t)current;
 }
