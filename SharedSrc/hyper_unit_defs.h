@@ -135,9 +135,9 @@
 #define UNIT_VL6180X_3_CE_GPIO		GPIOA			/**< The GPIO peripheral connected to 3rd sensor's CE pin */
 #define UNIT_VL6180X_3_INT_PIN		GPIO_Pin_7		/**< The GPIO pin connected to 3rd sensor's INT pin */
 #define UNIT_VL6180X_3_INT_GPIO		GPIOA			/**< The GPIO peripheral connected to 3rd sensor's INT pin */
-#define UNIT_VL6180X_4_CE_PIN		GPIO_Pin_14		/**< The GPIO pin connected to 4th sensor's CE pin */
+#define UNIT_VL6180X_4_CE_PIN		GPIO_Pin_13		/**< The GPIO pin connected to 4th sensor's CE pin */
 #define UNIT_VL6180X_4_CE_GPIO		GPIOB			/**< The GPIO peripheral connected to 4th sensor's CE pin */
-#define UNIT_VL6180X_4_INT_PIN		GPIO_Pin_13		/**< The GPIO pin connected to 4th sensor's INT pin */
+#define UNIT_VL6180X_4_INT_PIN		GPIO_Pin_14		/**< The GPIO pin connected to 4th sensor's INT pin */
 #define UNIT_VL6180X_4_INT_GPIO		GPIOB			/**< The GPIO peripheral connected to 4th sensor's INT pin */
 #elif defined UNIT_2
 #define UNIT_VL6180X_POWER_PIN		GPIO_Pin_2		/**< The GPIO pin thats controls the power-on MOSFET */
@@ -154,9 +154,9 @@
 #define UNIT_VL6180X_3_CE_GPIO		GPIOA			/**< The GPIO peripheral connected to 3rd sensor's CE pin */
 #define UNIT_VL6180X_3_INT_PIN		GPIO_Pin_7		/**< The GPIO pin connected to 3rd sensor's INT pin */
 #define UNIT_VL6180X_3_INT_GPIO		GPIOA			/**< The GPIO peripheral connected to 3rd sensor's INT pin */
-#define UNIT_VL6180X_4_CE_PIN		GPIO_Pin_0		/**< The GPIO pin connected to 4th sensor's CE pin */
+#define UNIT_VL6180X_4_CE_PIN		GPIO_Pin_1		/**< The GPIO pin connected to 4th sensor's CE pin */
 #define UNIT_VL6180X_4_CE_GPIO		GPIOB			/**< The GPIO peripheral connected to 4th sensor's CE pin */
-#define UNIT_VL6180X_4_INT_PIN		GPIO_Pin_1		/**< The GPIO pin connected to 4th sensor's INT pin */
+#define UNIT_VL6180X_4_INT_PIN		GPIO_Pin_0		/**< The GPIO pin connected to 4th sensor's INT pin */
 #define UNIT_VL6180X_4_INT_GPIO		GPIOB			/**< The GPIO peripheral connected to 4th sensor's INT pin */
 #elif defined UNIT_5
 #define UNIT_VL6180X_POWER_PIN		GPIO_Pin_2		/**< The GPIO pin thats controls the power-on MOSFET */
@@ -173,9 +173,9 @@
 #define UNIT_VL6180X_3_CE_GPIO		GPIOB			/**< The GPIO peripheral connected to 3rd sensor's CE pin */
 #define UNIT_VL6180X_3_INT_PIN		GPIO_Pin_1		/**< The GPIO pin connected to 3rd sensor's INT pin */
 #define UNIT_VL6180X_3_INT_GPIO		GPIOB			/**< The GPIO peripheral connected to 3rd sensor's INT pin */
-#define UNIT_VL6180X_4_CE_PIN		GPIO_Pin_8		/**< The GPIO pin connected to 4th sensor's CE pin */
+#define UNIT_VL6180X_4_CE_PIN		GPIO_Pin_6		/**< The GPIO pin connected to 4th sensor's CE pin */
 #define UNIT_VL6180X_4_CE_GPIO		GPIOA			/**< The GPIO peripheral connected to 4th sensor's CE pin */
-#define UNIT_VL6180X_4_INT_PIN		GPIO_Pin_6		/**< The GPIO pin connected to 4th sensor's INT pin */
+#define UNIT_VL6180X_4_INT_PIN		GPIO_Pin_8		/**< The GPIO pin connected to 4th sensor's INT pin */
 #define UNIT_VL6180X_4_INT_GPIO		GPIOA			/**< The GPIO peripheral connected to 4th sensor's INT pin */
 #endif
 
