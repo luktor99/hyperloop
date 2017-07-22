@@ -11,7 +11,7 @@
 #include "shared_drivers/lm35.h"
 #include "shared_drivers/vl6180x.h"
 #include "unit_drivers/D6F_PH5050AD3.h"
-#include "unit_drivers/tmp102.h"s
+#include "unit_drivers/tmp102.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -19,11 +19,11 @@
 void UNIT_Init(void) {
 	LM35_Init();
 
-//	VL6180X_Init();
-//	VL6180X_InitSensor(VL6180X_ID1);
-//	VL6180X_InitSensor(VL6180X_ID2);
-//	VL6180X_InitSensor(VL6180X_ID3);
-//	VL6180X_InitSensor(VL6180X_ID4);
+	VL6180X_Init();
+	VL6180X_InitSensor(VL6180X_ID1);
+	VL6180X_InitSensor(VL6180X_ID2);
+	VL6180X_InitSensor(VL6180X_ID3);
+	VL6180X_InitSensor(VL6180X_ID4);
 
 	tmp102_Init();
 	tmp102_Config();
@@ -35,22 +35,22 @@ void UNIT_Init(void) {
  */
 inline void UNIT_Loop(void) {
 	// Read and update VL6180X sensors if there are new samples available
-//	if(VL6180X_IsSampleReady(VL6180X_ID1)) {
-//		uint8_t range1 = VL6180X_GetRange(VL6180X_ID1);
-//		HYPER_CAN_Update(updateVL6180X_1, &range1);
-//	}
-//	if(VL6180X_IsSampleReady(VL6180X_ID2)) {
-//		uint8_t range2 = VL6180X_GetRange(VL6180X_ID2);
-//		HYPER_CAN_Update(updateVL6180X_2, &range2);
-//	}
-//	if(VL6180X_IsSampleReady(VL6180X_ID3)) {
-//		uint8_t range3 = VL6180X_GetRange(VL6180X_ID3);
-//		HYPER_CAN_Update(updateVL6180X_3, &range3);
-//	}
-//	if(VL6180X_IsSampleReady(VL6180X_ID4)) {
-//		uint8_t range4 = VL6180X_GetRange(VL6180X_ID4);
-//		HYPER_CAN_Update(updateVL6180X_4, &range4);
-//	}
+	if(VL6180X_IsSampleReady(VL6180X_ID1)) {
+		uint8_t range1 = VL6180X_GetRange(VL6180X_ID1);
+		HYPER_CAN_Update(updateVL6180X_1, &range1);
+	}
+	if(VL6180X_IsSampleReady(VL6180X_ID2)) {
+		uint8_t range2 = VL6180X_GetRange(VL6180X_ID2);
+		HYPER_CAN_Update(updateVL6180X_2, &range2);
+	}
+	if(VL6180X_IsSampleReady(VL6180X_ID3)) {
+		uint8_t range3 = VL6180X_GetRange(VL6180X_ID3);
+		HYPER_CAN_Update(updateVL6180X_3, &range3);
+	}
+	if(VL6180X_IsSampleReady(VL6180X_ID4)) {
+		uint8_t range4 = VL6180X_GetRange(VL6180X_ID4);
+		HYPER_CAN_Update(updateVL6180X_4, &range4);
+	}
 
 	// Read and update the LM35 sensor
 	uint8_t lm35_temp = LM35_ReadTemp8();
