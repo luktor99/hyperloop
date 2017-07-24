@@ -12,12 +12,22 @@
  * @brief This function initializes resources required to control the power
  */
 void Power_Init(void) {
-	// TODO: Add init code
+	// GPIO setup
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	GPIO_InitTypeDef gpio_init;
+	gpio_init.GPIO_Pin = GPIO_Pin_10;
+	gpio_init.GPIO_Mode = GPIO_Mode_Out_PP;
+	gpio_init.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &gpio_init);
+
+	// Set NOT_PE low
+	GPIOB->BRR = GPIO_Pin_10;
 }
 
 /**
  * @brief This function powers down the system immediately
  */
 void Power_Down(void) {
-	// TODO: Add code
+	// Set NOT_PE high
+	GPIOB->BSRR = GPIO_Pin_10;
 }
