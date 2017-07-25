@@ -48,6 +48,11 @@ void Brakes_Init(void) {
 	gpio_init.GPIO_Speed = GPIO_Speed_2MHz;
 	GPIO_Init(UNIT_BRAKES_GPIO, &gpio_init);
 
+	// Disable JTAG on unit 2
+#if defined(UNIT_2)
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+#endif
+
 	// Power off the braking system
 	Brakes_SetState(BRAKES_POWEROFF);
 
