@@ -40,6 +40,6 @@ void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
 		Brakes_Release();
 	else if(msg_type == MSG_POWERDOWN)
 		Power_Down();
-	else if(msg_type == MSG_START)
+	else if(msg_type == MSG_START || msg_type == MSG_WATCHDOGRESET)
 		Watchdog_Reset();
 }
