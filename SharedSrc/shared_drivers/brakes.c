@@ -54,9 +54,9 @@ void Brakes_Init(void) {
 #endif
 
 	// Power off the braking system
-	Brakes_SetState(BRAKES_POWEROFF);
+	Brakes_SetState(BRAKES_NORMAL);
 
-#if defined(UNIT_6)
+#if defined(UNIT_6) // Setup brakes manual control buttons in unit 6
 	// Setup the GPIOs required for manual controls in UNIT_6
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	GPIO_InitTypeDef gpio;
@@ -65,6 +65,31 @@ void Brakes_Init(void) {
 	GPIO_Init(GPIOB, &gpio);
 
 	HYPER_Delay(200);
+
+	// Interrupts setup
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+
+	NVIC_InitTypeDef nvic_init;
+	nvic_init.NVIC_IRQChannelPreemptionPriority = 2;
+	nvic_init.NVIC_IRQChannelSubPriority = 0;
+	nvic_init.NVIC_IRQChannelCmd = ENABLE;
+	nvic_init.NVIC_IRQChannel = EXTI0_IRQn;
+	NVIC_Init(&nvic_init);
+	nvic_init.NVIC_IRQChannel = EXTI1_IRQn;
+	NVIC_Init(&nvic_init);
+	nvic_init.NVIC_IRQChannel = EXTI2_IRQn;
+	NVIC_Init(&nvic_init);
+
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource0);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource1);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource2);
+
+	EXTI_InitTypeDef exti_init;
+	exti_init.EXTI_Line = EXTI_Line0 | EXTI_Line1 | EXTI_Line2;
+	exti_init.EXTI_Mode = EXTI_Mode_Interrupt;
+	exti_init.EXTI_Trigger = EXTI_Trigger_Rising;
+	exti_init.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&exti_init);
 #endif
 }
 
@@ -117,10 +142,19 @@ static void Brakes_SetState(BrakesState_t state) {
 	brakesState = state;
 }
 
+#if defined(UNIT_6)
+
+uint8_t Power_Check(void); // function from unit6's power driver
+
 /**
  * @brief This function polls the manual brakes controls and takes appropriate actions
  */
 void Buttons_Tick(void) {
+	// If the system is powered on, take no action
+	if(Power_Check())
+		return;
+
+	// Power is down, so taking action is allowed
 	if(ON(GPIO_NORMAL) + ON(GPIO_HOLD) + ON(GPIO_RELEASE) > 1)
 		return;
 	else if(ON(GPIO_NORMAL) && brakesState != BRAKES_NORMAL)
@@ -130,5 +164,30 @@ void Buttons_Tick(void) {
 	else if(ON(GPIO_RELEASE) && brakesState != BRAKES_RELEASE)
 		Brakes_Release();
 }
+
+/**
+ * @brief This function handles the EXTI0_IRQ
+ */
+void EXTI0_IRQHandler(void) {
+	Buttons_Tick();
+	EXTI_ClearITPendingBit(EXTI_Line0);
+}
+
+/**
+ * @brief This function handles the EXTI1_IRQ
+ */
+void EXTI1_IRQHandler(void) {
+	Buttons_Tick();
+	EXTI_ClearITPendingBit(EXTI_Line1);
+}
+
+/**
+ * @brief This function handles the EXTI2_IRQ
+ */
+void EXTI2_IRQHandler(void) {
+	Buttons_Tick();
+	EXTI_ClearITPendingBit(EXTI_Line2);
+}
+#endif
 
 #endif

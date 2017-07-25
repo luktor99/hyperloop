@@ -10,5 +10,6 @@
 
 void Power_Init(void);
 void Power_Down(void);
+uint8_t Power_Check(void);
 
 #endif /* UNIT_DRIVERS_POWER_H_ */

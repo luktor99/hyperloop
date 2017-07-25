@@ -18,15 +18,14 @@
 void UNIT_Init(void) {
 	Brakes_Init();
 	Power_Init();
-//	Watchdog_Init();
+	Watchdog_Init();
 }
 
 /**
  * @brief This function is run in an infinite loop. This is where outgoing data gets updated.
  */
 inline void UNIT_Loop(void) {
-//	Watchdog_Tick();
-	Buttons_Tick();
+	Watchdog_Tick();
 }
 
 /**

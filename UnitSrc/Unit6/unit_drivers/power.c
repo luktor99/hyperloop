@@ -12,7 +12,7 @@
  * @brief This function initializes resources required to control the power
  */
 void Power_Init(void) {
-	// GPIO setup
+	// GPIO setup - NOT_PE output
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	GPIO_InitTypeDef gpio_init;
 	gpio_init.GPIO_Pin = GPIO_Pin_10;
@@ -22,6 +22,11 @@ void Power_Init(void) {
 
 	// Set NOT_PE low
 	GPIOB->BRR = GPIO_Pin_10;
+
+	// P_STATE input
+	gpio_init.GPIO_Pin = GPIO_Pin_11;
+	gpio_init.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOB, &gpio_init);
 }
 
 /**
@@ -30,4 +35,11 @@ void Power_Init(void) {
 void Power_Down(void) {
 	// Set NOT_PE high
 	GPIOB->BSRR = GPIO_Pin_10;
+}
+
+/**
+ * @brief This function checks if the system is powered
+ */
+uint8_t Power_Check(void) {
+	return GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11);
 }
