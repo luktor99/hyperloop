@@ -29,4 +29,6 @@ void HYPER_Start(void);
 void HYPER_WaitForStart(void);
 void HYPER_Reset(void);
 
+void HYPER_Watchdog_Init(void);
+
 #endif /* HYPER_UTILS_H_ */

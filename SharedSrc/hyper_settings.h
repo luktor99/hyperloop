@@ -18,6 +18,8 @@
 #define HYPER_INTERNAL_TEMP_MAX 	1100 	/**< Max temperature threshold in 0.1°C (eg. 1234 = 123.4°C). Exceeding this value causes a fatal error */
 #define HYPER_INTERNAL_TEMP_PERIOD	500		/**< The time between internal temperature checks (in ms) */
 
-#define UNIT6_WATCHDOG_TIMEOUT		1000	/**< The time it takes for the unit 6 watchdog to overflow */
+#define HYPER_WATCHDOG_TIMEOUT		4000	/**< The time it takes for the IWDG to overflow (in 0.1ms, 4095 max), eg. 4000 = 0.4s */
+
+#define UNIT6_WATCHDOG_TIMEOUT		1000	/**< The time it takes for the unit 6 watchdog to overflow (in ms) */
 
 #endif /* HYPER_SETTINGS_H_ */

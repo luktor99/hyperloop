@@ -54,7 +54,7 @@ void Brakes_Init(void) {
 #endif
 
 	// Power off the braking system
-	Brakes_SetState(BRAKES_NORMAL);
+	Brakes_SetState(BRAKES_POWEROFF);
 
 #if defined(UNIT_6) // Setup brakes manual control buttons in unit 6
 	// Setup the GPIOs required for manual controls in UNIT_6

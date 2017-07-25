@@ -37,13 +37,24 @@ int main(void) {
 	HYPER_Init();
 	UNIT_Init();
 
-	//HYPER_WaitForStart();
+	// Don't wait for the start message if IWDG caused the reset
+	if(RCC_GetFlagStatus(RCC_FLAG_IWDGRST) != SET) {
+//		HYPER_WaitForStart();
+	}
+
+	// Clear the reset flags
+	RCC_ClearFlag();
+
+	// Enable IWDG
+	IWDG_Enable();
 
 	for(;;) {
 		UNIT_Loop();
 
 		//HYPER_TempSensor_Check();
 		HYPER_LED_Tick();
+
+		IWDG_ReloadCounter();
 	}
 }
 

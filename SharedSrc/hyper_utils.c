@@ -234,3 +234,13 @@ void HYPER_WaitForStart(void) {
 void HYPER_Reset(void) {
 	NVIC_SystemReset();
 }
+
+/**
+ * @brief This function initializes the IWDG
+ */
+void HYPER_Watchdog_Init(void) {
+	IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+	IWDG_SetPrescaler(IWDG_Prescaler_4); // 10kHz clock
+	IWDG_SetReload(HYPER_WATCHDOG_TIMEOUT);
+	IWDG_ReloadCounter();
+}
