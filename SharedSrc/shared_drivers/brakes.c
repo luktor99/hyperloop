@@ -13,9 +13,16 @@
 #include "hyper_unit_defs.h"
 #include "hyper_utils.h"
 
-#define GPIO_NORMAL		GPIO_Pin_0
-#define GPIO_HOLD		GPIO_Pin_2
-#define GPIO_RELEASE	GPIO_Pin_1
+#if defined(UNIT_2)
+#define DEFAULT_STATE	BRAKES_NORMAL	/**< The default brakes state for UNIT_2 */
+#elif defined(UNIT_6)
+#define DEFAULT_STATE	BRAKES_POWEROFF	/**< The default brakes state for UNIT_6 */
+#endif
+
+#define GPIO_NORMAL		GPIO_Pin_0		/**< The GPIO pin connected to the BRAKES_N button */
+#define GPIO_HOLD		GPIO_Pin_2		/**< The GPIO pin connected to the BRAKES_1 button */
+#define GPIO_RELEASE	GPIO_Pin_1		/**< The GPIO pin connected to the BRAKES_0 button */
+
 #define ON(x) GPIO_ReadInputDataBit(GPIOB, x)
 
 /**
@@ -53,8 +60,8 @@ void Brakes_Init(void) {
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 #endif
 
-	// Power off the braking system
-	Brakes_SetState(BRAKES_POWEROFF);
+	// Set the default brakes state
+	Brakes_SetState(DEFAULT_STATE);
 
 #if defined(UNIT_6) // Setup brakes manual control buttons in unit 6
 	// Setup the GPIOs required for manual controls in UNIT_6

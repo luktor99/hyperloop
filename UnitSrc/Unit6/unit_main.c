@@ -37,6 +37,8 @@ void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
 		Brakes_Hold();
 	else if(msg_type == MSG_BRAKESRELEASE)
 		Brakes_Release();
+	else if(msg_type == MSG_BRAKESPOWEROFF)
+		Brakes_PowerOff();
 	else if(msg_type == MSG_POWERDOWN)
 		Power_Down();
 	else if(msg_type == MSG_START || msg_type == MSG_WATCHDOGRESET)

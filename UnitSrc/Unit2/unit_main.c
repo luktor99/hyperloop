@@ -19,6 +19,7 @@
  * @brief This function performs initialization of the peripherals specific to the unit.
  */
 void UNIT_Init(void) {
+	Brakes_Init();
 	LM35_Init();
 
 	VL6180X_Init();
@@ -86,4 +87,6 @@ void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
 		Brakes_Hold();
 	else if(msg_type == MSG_BRAKESRELEASE)
 		Brakes_Release();
+	else if(msg_type == MSG_BRAKESPOWEROFF)
+		Brakes_PowerOff();
 }

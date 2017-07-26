@@ -79,6 +79,7 @@ typedef enum {
 	MSG_POWERDOWN,			/**< Emergency power cut message (unit 6 only) */
 	MSG_WATCHDOGRESET,		/**< Watchdog reset message (unit 6 only) */
 	MSG_BRAKESHOLD,			/**< Brakes hold message (unit 2 and 6 only) */
-	MSG_BRAKESRELEASE		/**< Brakes release message (unit 2 and 6 only) */
+	MSG_BRAKESRELEASE,		/**< Brakes release message (unit 2 and 6 only) */
+	MSG_BRAKESPOWEROFF		/**< Brakes poweroff message (unit 2 and 6 only) */
 } MsgType_t;
 #endif /* HYPER_CAN_FRAMES_H_ */
