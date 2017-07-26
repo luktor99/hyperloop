@@ -39,7 +39,7 @@ int main(void) {
 
 	// Don't wait for the start message if IWDG caused the reset
 	if(RCC_GetFlagStatus(RCC_FLAG_IWDGRST) != SET) {
-//		HYPER_WaitForStart();
+		HYPER_WaitForStart();
 	}
 
 	// Clear the reset flags
