@@ -1,6 +1,6 @@
 /**
  * @file Unit34/unit_main.c
- * @author Łukasz Kilaszewski (luktor99)
+ * @author Ĺ�ukasz Kilaszewski (luktor99)
  * @author Serafin Bachman
  * @date 4-July-2017
  * @brief This file contains implementation of the main functions (UNIT_Init() and UNIT_Loop()), which are specific to each of the units.
@@ -24,7 +24,7 @@ void UNIT_Init(void) {
  * @brief This function is run in an infinite loop. This is where outgoing data gets updated.
  */
 inline void UNIT_Loop(void) {
-	uint16_t angular_enc = AngularEnkoder_Read();
+	uint16_t angular_enc = AngularVelocity_Read();
 	HYPER_CAN_Update(updateEnkoder, &angular_enc);
 
 	uint32_t linear_enc = LinearEncoder_Read();

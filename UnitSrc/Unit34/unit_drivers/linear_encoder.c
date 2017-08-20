@@ -29,7 +29,7 @@ static void ADC_unit3i4_Init();
  * @brief This function performs initialization of the peripherals required to drive the linear encoder
  */
 void LinearEncoder_Init() {
-	PWM_Init(500); // 1000 max
+	PWM_Init(999); // 1000 max
 	ADC_unit3i4_Init();
 }
 

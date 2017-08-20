@@ -12,6 +12,8 @@
 #define Enk_ch2		GPIO_Pin_7 		/**< The GPIO pin connected to the angular encoder ch2 input */
 
 volatile uint16_t pulse_count = 0;
+volatile uint32_t time =0;
+volatile uint16_t velocity =0;
 
 /**
  * @brief This function performs initialization of TIM3 in enkoder mode.
@@ -50,6 +52,29 @@ void AngularEncoder_Init() {
 }
 
 /**
+ * @brief This function performs TIM3 interupt after one full wheel cycle.
+ */
+volatile uint32_t time_new = 0;
+volatile uint32_t time_old = 0;
+
+void TIM3_IRQHandler() {
+
+	time_new = SysTick->VAL;
+
+	velocity = (40/(time_new - time_old))*1000;  // distance subtract by time difference
+
+	time_old = time_new;
+}
+
+/**
+ * @brief This function performs velocity.
+ */
+uint16_t AngularVelocity_Read() {
+	/* Encoder counter */
+	return velocity;
+}
+
+/**
  * @brief This function performs number of counted pulses.
  */
 uint16_t AngularEnkoder_Read() {
@@ -57,3 +82,6 @@ uint16_t AngularEnkoder_Read() {
 	pulse_count = TIM_GetCounter(TIM3);
 	return pulse_count;
 }
+
+
+

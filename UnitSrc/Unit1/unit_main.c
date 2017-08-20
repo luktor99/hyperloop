@@ -1,6 +1,6 @@
 /**
  * @file Unit1/unit_main.c
- * @author Łukasz Kilaszewski (luktor99)
+ * @author Ĺ�ukasz Kilaszewski (luktor99)
  * @date 4-July-2017
  * @brief This file contains implementation of the main functions (UNIT_Init() and UNIT_Loop()), which are specific to each of the units.
  */
@@ -12,6 +12,19 @@
 #include "shared_drivers/vl6180x.h"
 #include "unit_drivers/D6F_PH5050AD3.h"
 #include "unit_drivers/tmp102.h"
+
+#define Tube_pressure 1000; // Ustawiam wstępnie na 1kPa
+
+uint16_t sqrti( uint16_t v ) {
+    uint16_t r = 0;
+    uint16_t _r =0;
+        for(int i =15; i>0;i--){
+        _r = r+(1<<i);
+        if ( _r*_r <= v ) r=_r;
+        }
+    return r;
+}
+
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -56,23 +69,33 @@ inline void UNIT_Loop(void) {
 	uint8_t lm35_temp = LM35_ReadTemp8();
 	HYPER_CAN_Update(updateLM35, &lm35_temp);
 
+	uint8_t tmp102_Celsius;
+
 	//Read and update tmp102 sensor if there are new samples available
 	static uint32_t temperature_timestamp = 0;
 	if (HYPER_Delay_Check(temperature_timestamp, 125)) {
-		uint8_t tmp102_Celsius = tmp102_ReadTemp();
+		tmp102_Celsius = tmp102_ReadTemp();
 		HYPER_CAN_Update(updateTMP102, &tmp102_Celsius);
 
 		// Update the time stamp
 		temperature_timestamp = HYPER_Delay_GetTime();
 	}
 
+	uint16_t Ro = tmp102_Celsius * Tube_pressure;
+
 	//Read and update D6F_PH5050AD3 sensor if there are new samples available
 	static uint32_t pitot_timestamp = 0;
 	if (HYPER_Delay_Check(pitot_timestamp, 40)) {
+
 		uint16_t pitot_press = D6F_PH5050AD3_ReadPress();
-		HYPER_CAN_Update(updatePitot, &pitot_press);
+
+		uint16_t pitot_velocity = sqrti((2*pitot_press)/Ro);
+
+		HYPER_CAN_Update(updatePitot, &pitot_velocity);
+
 		//ask pitot to start another read-out
 		D6F_PH5050AD3_StartAnotherRead();
+
 		// Update the time stamp
 		pitot_timestamp = HYPER_Delay_GetTime();
 	}
