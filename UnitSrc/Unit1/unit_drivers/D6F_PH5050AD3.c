@@ -195,6 +195,6 @@ uint16_t D6F_PH5050AD3_ReadPress(void)
  */
 float D6F_PH5050AD3_Conv_to_Pascal(uint16_t data)
 {
-	float pressure_Pascal = ((((((float)data) - 1024)/60000)*1000)-500);
+	float pressure_Pascal = (((((float)data) - 1024)/60)-500);
 	return pressure_Pascal;
 }
