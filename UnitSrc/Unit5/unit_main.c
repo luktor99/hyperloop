@@ -1,6 +1,6 @@
 /**
  * @file Unit5/unit_main.c
- * @author Łukasz Kilaszewski (luktor99)
+ * @author Ĺ�ukasz Kilaszewski (luktor99)
  * @author Serafin Bachman
  * @date 4-July-2017
  * @brief This file contains implementation of the main functions (UNIT_Init() and UNIT_Loop()), which are specific to each of the units.
@@ -13,7 +13,7 @@
 #include "shared_drivers/mlx90614.h"
 #include "shared_drivers/voltmeter.h"
 #include "unit_drivers/current_sensor.h"
-#include "unit_drivers/pressure_sensor.h"
+#include "unit_drivers/battery_voltage_sensor.h"
 
 /**
  * @brief This function performs initialization of the peripherals specific to the unit.
@@ -28,7 +28,7 @@ void UNIT_Init(void) {
 	MLX90614_Init();
 	Voltmeter_Init();
     CurrentSensor_Init();
-    PressureSensor_Init();
+    VoltageSensor_Init();
 }
 
 /**
@@ -66,6 +66,6 @@ inline void UNIT_Loop(void) {
 	HYPER_CAN_Update(updateCurrent, &current);
 
     // Read and update the internal pod pressure
-	uint8_t pressure = PressureSensor_Read();
-	HYPER_CAN_Update(updateCabinPressure, &pressure);
+	uint8_t BaterryVoltage = VoltageSensor_Read();
+	HYPER_CAN_Update(updateBatteryVoltage, &BaterryVoltage);
 }

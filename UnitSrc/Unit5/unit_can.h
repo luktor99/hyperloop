@@ -1,6 +1,6 @@
 /**
  * @file Unit5/unit_can.h
- * @author Łukasz Kilaszewski (luktor99)
+ * @author Ĺ�ukasz Kilaszewski (luktor99)
  * @date 5-July-2017
  * @brief This file contains implementation of functions that update the unit's CAN output buffer.
  */
@@ -77,8 +77,8 @@ void updateCurrent(unit_DataBuffer_t *buffer, void *value) {
  * @param buffer Pointer to the CAN buffer structure
  * @param value Pointer to the new data
  */
-void updateCabinPressure(unit_DataBuffer_t *buffer, void *value) {
-	buffer->cabinPressure = *(uint8_t *)value;
+void updateBatteryVoltage(unit_DataBuffer_t *buffer, void *value) {
+	buffer->voltageBattery = *(uint8_t *)value;\
 }
 
 #endif /* UNIT_CAN_H_ */

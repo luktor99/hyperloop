@@ -89,9 +89,10 @@ inline void UNIT_Loop(void) {
 
 		uint16_t pitot_press = D6F_PH5050AD3_ReadPress();
 
-		uint16_t pitot_velocity = sqrti((2*pitot_press)/Ro);
+		//uint16_t pitot_velocity = sqrti((2*pitot_press)/Ro);
+		pitot_press = D6F_PH5050AD3_Conv_to_Pascal(pitot_press);
 
-		HYPER_CAN_Update(updatePitot, &pitot_velocity);
+		HYPER_CAN_Update(updatePitot, &pitot_press);
 
 		//ask pitot to start another read-out
 		D6F_PH5050AD3_StartAnotherRead();
