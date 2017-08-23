@@ -25,14 +25,20 @@ void MLX90614_Init(void) {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
-	// TODO: enable sensor's power on Unit5
-
 	// I2C1 SCL(PB6), SDA(PB7) pins setup
 	GPIO_InitTypeDef gpio_init;
 	gpio_init.GPIO_Mode = GPIO_Mode_AF_OD;
 	gpio_init.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
 	gpio_init.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Init(GPIOB, &gpio_init);
+
+#if defined(UNIT_5)
+	// Enable sensor's power on Unit5 (set PB12 LOW)
+	gpio_init.GPIO_Mode = GPIO_Mode_Out_PP;
+	gpio_init.GPIO_Pin = GPIO_Pin_12;
+	gpio_init.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &gpio_init);
+#endif
 
 	// I2C1 setup
 	I2C_DeInit(I2C1);
