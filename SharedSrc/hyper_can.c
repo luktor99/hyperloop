@@ -18,7 +18,7 @@
  */
 static unit_DataBuffer_t unitDataBuffer = {0};
 
-void UNIT_CAN_ProcessFrame(MsgType_t msg_type) __attribute__((weak));
+void UNIT_CAN_ProcessFrame(MsgType_t msg_type, uint8_t *msg_data) __attribute__((weak));
 
 /**
  * @brief This function initializes the CAN1 peripheral and the required GPIOs.
@@ -120,7 +120,7 @@ static void HYPER_CAN_ProcessFrame(CanRxMsg* msg) {
 		else if(msg_type == MSG_RESET)
 			HYPER_Reset();
 		// Pass the message to the unit's processing function
-		UNIT_CAN_ProcessFrame(msg_type);
+		UNIT_CAN_ProcessFrame(msg_type, msg->Data);
 	}
 
 	// Update the status LED

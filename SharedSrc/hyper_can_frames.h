@@ -60,7 +60,7 @@ typedef struct {
 	uint8_t pyroTemperature		: 8;	/**< Temperature reading from MLX90614 pyrometer */
 	uint8_t voltage12V			: 8;	/**< 12V rail voltage reading */
 	uint8_t current				: 8;	/**< Current sensor reading */
-	uint8_t cabinPressure		: 8;	/**< Pressure reading from the cabin pressure sensor */
+	uint8_t voltageBattery		: 8;	/**< Pressure reading from the cabin pressure sensor */
 } __attribute__((__packed__)) unit5_DataBuffer_t;
 
 /**
@@ -74,12 +74,13 @@ typedef struct {
  * @brief This enum represents the possible incoming messages
  */
 typedef enum {
-	MSG_START = 0,			/**< Unit start message */
-	MSG_RESET,				/**< Unit reset message */
-	MSG_POWERDOWN,			/**< Emergency power cut message (unit 6 only) */
-	MSG_WATCHDOGRESET,		/**< Watchdog reset message (unit 6 only) */
-	MSG_BRAKESHOLD,			/**< Brakes hold message (unit 2 and 6 only) */
-	MSG_BRAKESRELEASE,		/**< Brakes release message (unit 2 and 6 only) */
-	MSG_BRAKESPOWEROFF		/**< Brakes poweroff message (unit 2 and 6 only) */
+	MSG_START = 0,				/**< Unit start message */
+	MSG_RESET,					/**< Unit reset message */
+	MSG_POWERDOWN,				/**< Emergency power cut message (unit 6 only) */
+	MSG_WATCHDOGRESET,			/**< Watchdog reset message (unit 6 only) */
+	MSG_BRAKESHOLD,				/**< Brakes hold message (unit 2 and 6 only) */
+	MSG_BRAKESRELEASE,			/**< Brakes release message (unit 2 and 6 only) */
+	MSG_BRAKESPOWEROFF,			/**< Brakes poweroff message (unit 2 and 6 only) */
+	MSG_BRAKESLOCKUPDATE		/**< Brakes lock time update (unit 6 only) */
 } MsgType_t;
 #endif /* HYPER_CAN_FRAMES_H_ */

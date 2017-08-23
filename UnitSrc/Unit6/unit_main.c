@@ -31,8 +31,9 @@ inline void UNIT_Loop(void) {
 /**
  * @brief This function processes a received CAN message
  * @param msg_type The message type @see MsgType_t
+ * @param msg_data The message contents
  */
-void UNIT_CAN_ProcessFrame(MsgType_t msg_type) {
+void UNIT_CAN_ProcessFrame(MsgType_t msg_type, uint8_t *msg_data) {
 	if(msg_type == MSG_BRAKESHOLD)
 		Brakes_Hold();
 	else if(msg_type == MSG_BRAKESRELEASE)

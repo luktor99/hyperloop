@@ -78,7 +78,7 @@ void updateCurrent(unit_DataBuffer_t *buffer, void *value) {
  * @param value Pointer to the new data
  */
 void updateBatteryVoltage(unit_DataBuffer_t *buffer, void *value) {
-	buffer->voltageBattery = *(uint8_t *)value;\
+	buffer->voltageBattery = *(uint8_t *)value;
 }
 
 #endif /* UNIT_CAN_H_ */
