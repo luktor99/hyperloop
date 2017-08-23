@@ -41,7 +41,7 @@ typedef struct {
  */
 typedef struct {
     uint32_t stripesCounter		: 32;	/**< Linear encoder value (stripes counter) */
-    int16_t encoderVelocity		: 16;	/**< Encoder velocity */
+    int32_t encoderPos			: 16;	/**< Encoder position */
 } __attribute__((__packed__)) unit3_DataBuffer_t;
 
 /**

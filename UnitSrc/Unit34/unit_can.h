@@ -14,7 +14,7 @@
  * @param value Pointer to the new data
  */
 void updateEnkoder(unit_DataBuffer_t *buffer, void *value) {
-	buffer->encoderVelocity = *(uint16_t *)value;
+	buffer->encoderPos = *(int32_t *)value;
 }
 
 /**

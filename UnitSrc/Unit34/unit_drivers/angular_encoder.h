@@ -11,5 +11,6 @@
 void AngularEncoder_Init();
 uint16_t AngularEnkoder_Read();
 uint16_t AngularVelocity_Read();
+int32_t AngularEncoder_GetPos();
 
 #endif /* UNIT_DRIVERS_ANGULAR_ENCODER_H_ */
