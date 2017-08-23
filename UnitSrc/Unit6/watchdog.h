@@ -24,12 +24,25 @@ static uint32_t lastResetTimestamp;
  */
 static bool watchdogON = false;
 
+/**
+ * @brief The timestamp of the latest lock update event
+ */
+static uint32_t lastLockTimestamp = 0;
+/**
+ * @brief The duration time of the latest brakes lock
+ */
+static uint16_t lockTime = 0;
+/**
+ * @brief Lock active flag
+ */
+static bool locked = false;
 
 void Watchdog_Init(void);
 void Watchdog_Tick(void);
 void Watchdog_Reset(void);
 static void Watchdog_Overflow(void);
-
+bool Watchdog_IsLocked(void);
+void Watchdog_Lock(uint16_t time_ms);
 
 /**
  * @brief This function initializes the unit 6 watchdog
@@ -43,8 +56,19 @@ void Watchdog_Init(void) {
  * @brief This function takes appropriate actions if the watchdog has overflowed. It should be run as often as possible.
  */
 void Watchdog_Tick(void) {
-	if(!watchdogON)
+	if(locked) {
+		if(HYPER_Delay_Check(lastLockTimestamp, lockTime)) {
+			// Start / allow braking
+			Brakes_PowerOff();
+
+			// Disable the lock
+			locked = 0;
+		}
+	}
+
+	if(!watchdogON) {
 		return;
+	}
 
 	// Take appropriate actions if overflow has occurred
 	if(HYPER_Delay_Check(lastResetTimestamp, UNIT6_WATCHDOG_TIMEOUT))
@@ -64,11 +88,31 @@ void Watchdog_Reset(void) {
  */
 static void Watchdog_Overflow(void) {
 	// Enable the brakes
-	Brakes_Hold();
+	if(Watchdog_IsLocked())
+		Brakes_Hold();
 	// Power down the rest of the system
 	Power_Down();
 	// Stop the watchdog
 	watchdogON = false;
+}
+
+/**
+ * This function checks if the brakes lock is currently active
+ * @return Lock state (boolean)
+ */
+bool Watchdog_IsLocked(void) {
+	return locked;
+}
+
+/**
+ * This function locks the brakes for the given amount of time
+ * @param time_ms Lock duration (in ms)
+ */
+void Watchdog_Lock(uint16_t time_ms) {
+	//Brakes_Normal();
+	lastLockTimestamp = HYPER_Delay_GetTime();
+	lockTime = time_ms;
+	locked = true;
 }
 
 #endif /* UNITSRC_UNIT6_WATCHDOG_H_ */

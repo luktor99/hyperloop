@@ -34,14 +34,25 @@ inline void UNIT_Loop(void) {
  * @param msg_data The message contents
  */
 void UNIT_CAN_ProcessFrame(MsgType_t msg_type, uint8_t *msg_data) {
-	if(msg_type == MSG_BRAKESHOLD)
-		Brakes_Hold();
+	if(msg_type == MSG_BRAKESHOLD) {
+		if(!Watchdog_IsLocked())
+			Brakes_Hold();
+	}
 	else if(msg_type == MSG_BRAKESRELEASE)
-		Brakes_Release();
-	else if(msg_type == MSG_BRAKESPOWEROFF)
-		Brakes_PowerOff();
-	else if(msg_type == MSG_POWERDOWN)
+			Brakes_Release();
+	else if(msg_type == MSG_BRAKESPOWEROFF) {
+		if(!Watchdog_IsLocked())
+			Brakes_PowerOff();
+	}
+	else if(msg_type == MSG_POWERDOWN) {
+		if(!Watchdog_IsLocked())
+			Brakes_PowerOff();
 		Power_Down();
+	}
 	else if(msg_type == MSG_START || msg_type == MSG_WATCHDOGRESET)
 		Watchdog_Reset();
+	else if(msg_type == MSG_BRAKESLOCKUPDATE) {
+		uint16_t delay = (msg_data[1] << 8) | msg_data[2];
+		Watchdog_Lock(delay);
+	}
 }
