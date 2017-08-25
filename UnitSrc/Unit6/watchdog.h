@@ -109,7 +109,7 @@ bool Watchdog_IsLocked(void) {
  * @param time_ms Lock duration (in ms)
  */
 void Watchdog_Lock(uint16_t time_ms) {
-	//Brakes_Normal();
+	Brakes_Normal();
 	lastLockTimestamp = HYPER_Delay_GetTime();
 	lockTime = time_ms;
 	locked = true;
