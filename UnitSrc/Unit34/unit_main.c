@@ -24,7 +24,7 @@ void UNIT_Init(void) {
  * @brief This function is run in an infinite loop. This is where outgoing data gets updated.
  */
 inline void UNIT_Loop(void) {
-	int32_t angular_enc = AngularEncoder_GetPos();
+	int32_t angular_enc = 514;//AngularEncoder_GetPos();
 	HYPER_CAN_Update(updateEnkoder, &angular_enc);
 
 	uint32_t linear_enc = LinearEncoder_Read();

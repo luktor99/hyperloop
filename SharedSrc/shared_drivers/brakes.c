@@ -16,7 +16,7 @@
 #if defined(UNIT_2)
 #define DEFAULT_STATE	BRAKES_NORMAL	/**< The default brakes state for UNIT_2 */
 #elif defined(UNIT_6)
-#define DEFAULT_STATE	BRAKES_NORMAL	/**< The default brakes state for UNIT_6 */
+#define DEFAULT_STATE	BRAKES_POWEROFF	/**< The default brakes state for UNIT_6 */
 #endif
 
 #define GPIO_NORMAL		GPIO_Pin_0		/**< The GPIO pin connected to the BRAKES_N button */

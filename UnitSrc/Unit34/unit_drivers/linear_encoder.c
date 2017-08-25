@@ -7,6 +7,8 @@
 
 #include "stm32f10x.h"
 #include "linear_encoder.h"
+#include <stdbool.h>
+#include "hyper_utils.h"
 
 #define Mos1_Pin	GPIO_Pin_1		/**< The GPIO pin connected to the diode voltage level mosfet input */
 #define Mos2_Pin	GPIO_Pin_2		/**< The GPIO pin connected to the diode voltage level mosfet input */
@@ -15,61 +17,41 @@
 #define ADC2_Pin	GPIO_Pin_5		/**< The GPIO pin connected to the line encoder ch2 input */
 #define ADC3_Pin	GPIO_Pin_0		/**< The GPIO pin connected to the line encoder ch3 input */
 
-#define CUTOFF		10000			/**< Definition of cutoff frequency */
+#define CUTOFF		1000			/**< Definition of cutoff frequency */
 #define SAMPLE_RATE	25000 			/**< Definition of sampling rate (TRZEBA USTALIC) */
 #define Threshold 	2000
 
-static volatile uint16_t buforADC[3]={0}; // 16 musi byc
+#define MIN_THRESHOLD 12
+
+static volatile uint16_t buforADC[3]={0};
+uint32_t counter = 0;
+
+static uint16_t calib = 0;
+static uint16_t max = 0;
+
+static volatile float value = 0.0f;
+
+const float alpha = 0.001f;
 
 static float lowPassFrequency(float input, float previous);
-static void PWM_Init(uint16_t value);
 static void ADC_unit3i4_Init();
 
 /**
  * @brief This function performs initialization of the peripherals required to drive the linear encoder
  */
 void LinearEncoder_Init() {
-	PWM_Init(999); // 1000 max
 	ADC_unit3i4_Init();
-}
 
-/**
- * @brief This function performs initialization of TIM2 in PWM mode.
- */
-static void PWM_Init(uint16_t value){
-	/* TIM2 PWM */
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	// Calibrate the encoder
+	HYPER_Delay(200);
+	uint32_t acc = 0;
+	for(uint16_t i = 0; i < 500; ++i) {
+		acc += buforADC[0];
+		HYPER_Delay(1);
+	}
 
-	GPIO_InitTypeDef  GPIO_InitStructure;
-
-	GPIO_InitStructure.GPIO_Pin = Mos1_Pin | Mos2_Pin | Mos3_Pin ;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-	 /* Timer configuration */
-	TIM_TimeBaseInitTypeDef tim;
-	TIM_OCInitTypeDef  channel;
-
-	TIM_TimeBaseStructInit(&tim);
-	tim.TIM_CounterMode = TIM_CounterMode_Up;
-	tim.TIM_Prescaler = 64 - 1;
-	tim.TIM_Period = 1000 - 1;
-	TIM_TimeBaseInit(TIM2, &tim);
-
-	TIM_OCStructInit(&channel);
-	channel.TIM_OCMode = TIM_OCMode_PWM2;
-	channel.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OC2Init(TIM2, &channel);
-	TIM_OC3Init(TIM2, &channel);
-	TIM_OC4Init(TIM2, &channel);
-
-	TIM_Cmd(TIM2, ENABLE);
-
-	/* Mosfet voltage */
-	TIM2->CCR2 = value;
-	TIM2->CCR3 = value;
-	TIM2->CCR4 = value;
+	calib = acc / 500;
+	max = calib + MIN_THRESHOLD;
 }
 
 /**
@@ -85,7 +67,7 @@ static void ADC_unit3i4_Init(){
 
 	GPIO_InitTypeDef  GPIO_InitStructure;
 
-	GPIO_InitStructure.GPIO_Pin = ADC1_Pin | ADC2_Pin | ADC3_Pin ;
+	GPIO_InitStructure.GPIO_Pin = ADC1_Pin | ADC2_Pin | ADC3_Pin;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
@@ -148,10 +130,6 @@ static void ADC_unit3i4_Init(){
  * @brief This function performs low pass filter.
  */
 static float lowPassFrequency(float input, float previous){
-
-    float RC = 1.0/(CUTOFF*2*3.14);
-    float dt = 1.0/SAMPLE_RATE;
-    float alpha = dt/(RC+dt);
     float output = previous + (alpha*(input - previous));
 
     return output;
@@ -160,18 +138,24 @@ static float lowPassFrequency(float input, float previous){
 /**
  * @brief This function give number of detected straps
  */
-uint32_t LinearEncoder_Read(){
+uint32_t LinearEncoder_Read() {
+	static bool strip_detected = false;
 
-	volatile uint32_t buforPaski = 0;
-	volatile uint16_t napiecie[3]= {0};
+	value = lowPassFrequency((float)buforADC[0], value);
 
-	/* ADC values */
-	int i;
-	int wykryte=0;
-	for ( i=0; i<3; i++ ) {
-		napiecie[i] = lowPassFrequency(buforADC[i], napiecie[i]);
-		if ( napiecie[i]> Threshold) wykryte++;
+	if(value > max)
+		max = value;
+
+	if(strip_detected) {
+		if(value < calib+(max-calib)/3)
+			strip_detected = false;
 	}
-	if(wykryte == 2) buforPaski++;
-	return buforPaski;
+	else {
+		if(value > calib+(max-calib)*2/3) {
+			strip_detected = true;
+			++counter;
+		}
+	}
+
+	return counter;
 }
