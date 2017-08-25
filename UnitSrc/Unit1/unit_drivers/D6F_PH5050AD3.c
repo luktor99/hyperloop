@@ -9,6 +9,12 @@
 #include "stm32f10x.h"
 #include "D6F_PH5050AD3.h"
 
+#define AVG_LENGTH		20		/**< Length of the moving average filter */
+#define VALUE_SCALE		650		/**< The scaling factor */
+
+static uint16_t avg[AVG_LENGTH] = {0};
+static uint8_t avg_i = 0;
+
 #define D6F_PH5050AD3_ADDR (0x6C << 1) /**< tmp102's I2C address */
 
 /**
@@ -185,8 +191,14 @@ uint16_t D6F_PH5050AD3_ReadPress(void)
 	// Generate STOP condition
 	I2C_GenerateSTOP(I2C1, ENABLE);
 
-	return data;
+	avg[avg_i] = data;
+	avg_i = (avg_i + 1) % AVG_LENGTH;
+	uint32_t sum = 0;
+	for(uint8_t i = 0; i < AVG_LENGTH; i++) {
+		sum += avg[i];
+	}
 
+	return sum*VALUE_SCALE/AVG_LENGTH;
 }
 
 /**
