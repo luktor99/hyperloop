@@ -21,7 +21,7 @@
 #define SAMPLE_RATE	25000 			/**< Definition of sampling rate (TRZEBA USTALIC) */
 #define Threshold 	2000
 
-#define MIN_THRESHOLD 12
+#define MIN_THRESHOLD 8
 
 static volatile uint16_t buforADC[3]={0};
 uint32_t counter = 0;
@@ -46,7 +46,9 @@ void LinearEncoder_Init() {
 	HYPER_Delay(200);
 	uint32_t acc = 0;
 	for(uint16_t i = 0; i < 500; ++i) {
-		acc += buforADC[0];
+		ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+		while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) != SET);
+		acc += ADC_GetConversionValue(ADC1);
 		HYPER_Delay(1);
 	}
 
@@ -58,11 +60,6 @@ void LinearEncoder_Init() {
  * @brief This function performs initialization of ADC with DMA.
  */
 static void ADC_unit3i4_Init(){
-	/* ADC GPIO */
-	//RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA, ENABLE);
-	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);   //wlacz taktowanie DMA
-	//RCC_ADCCLKConfig(RCC_PCLK2_Div6); // taktowanie adc 64/6 = 10.6MHz max 14MHz
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 
 	GPIO_InitTypeDef  GPIO_InitStructure;
@@ -72,58 +69,17 @@ static void ADC_unit3i4_Init(){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	/* DMA configuration*/
-	DMA_InitTypeDef DMA_InitStructure;
-	DMA_DeInit(DMA1_Channel1);                                                      // Usun ewentualna poprzednia konfiguracje DMA
-	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR; 				// Adres docelowy transferu
-	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&buforADC;            			// Adres poczatku bloku do przeslania
-	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;                              // Kierunek transferu
-	DMA_InitStructure.DMA_BufferSize = 3;                                           // Liczba elementow do przeslania (dlugosc bufora)
-	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;                // Wylaczenie automatycznego zwiekszania adresu po stronie ADC
-	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;                         // Wlaczenie automatycznego zwiekszania adresu po stronie pamieci (bufora)
-	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;     // Rozmiar pojedynczych przesylanych danych po stronie ADC (HalfWord = 16bit)
-	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;             // Rozmiar pojedynczych przesylanych danych po stronie pamieci (bufora)
-	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;                                 // Tryb dzialania kontrolera DMA - powtarzanie cykliczne
-	DMA_InitStructure.DMA_Priority = DMA_Priority_High;                             // Priorytet DMA - wysoki
-	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;                                    // Wylaczenie obslugi transferu z pamieci do pamieci
-	DMA_Init(DMA1_Channel1, &DMA_InitStructure);                                    // Zapis konfiguracji
-
-	/* ENABLE DMA, channel 1 */
-	DMA_Cmd(DMA1_Channel1, ENABLE);
-
-	/* ADC configuration */
-	ADC_InitTypeDef adc;
-	ADC_StructInit(&adc);
-	adc.ADC_ScanConvMode = ENABLE;
-	adc.ADC_ContinuousConvMode = ENABLE;
-	adc.ADC_NbrOfChannel = 3;  //4
-	adc.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
-	ADC_Init(ADC1, &adc);
-
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_0, 1, ADC_SampleTime_239Cycles5);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 2, ADC_SampleTime_239Cycles5);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 3, ADC_SampleTime_239Cycles5);
-
-	ADC_DMACmd(ADC1, ENABLE);
+	ADC_InitTypeDef adc_init;
+	adc_init.ADC_Mode = ADC_Mode_Independent;
+	adc_init.ADC_ScanConvMode = DISABLE;
+	adc_init.ADC_ContinuousConvMode = DISABLE;
+	adc_init.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	adc_init.ADC_DataAlign = ADC_DataAlign_Right;
+	adc_init.ADC_NbrOfChannel = 1;
+	ADC_Init(ADC1, &adc_init);
 	ADC_Cmd(ADC1, ENABLE);
 
-	ADC_ResetCalibration(ADC1);
-	while (ADC_GetResetCalibrationStatus(ADC1));
-
-	ADC_StartCalibration(ADC1);
-	while(ADC_GetCalibrationStatus(ADC1));
-
-	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
-
-	/* NVIC configuration */
-	NVIC_InitTypeDef NVIC_InitStructure;
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-
-	NVIC_InitStructure.NVIC_IRQChannel = ADC1_2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 1, ADC_SampleTime_239Cycles5);
 }
 
 /**
@@ -141,7 +97,11 @@ static float lowPassFrequency(float input, float previous){
 uint32_t LinearEncoder_Read() {
 	static bool strip_detected = false;
 
-	value = lowPassFrequency((float)buforADC[0], value);
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) != SET);
+	uint16_t adc_result = ADC_GetConversionValue(ADC1);
+	buforADC[0] = adc_result;
+	value = lowPassFrequency((float)adc_result, value);
 
 	if(value > max)
 		max = value;
